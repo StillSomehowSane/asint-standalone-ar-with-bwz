@@ -1,0 +1,27 @@
+{
+  "xsappname": "asint_standalone_ar_with_bwz",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of called application",
+  "scopes": [
+    {
+      "name": "uaa.user",
+      "description": "UAA"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": [
+        "uaa.user"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "token-validity": 3600,
+    "system-attributes": [],
+    "redirect-uris": [
+      "https://**/**"
+    ]
+  }
+}

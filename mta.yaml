@@ -1,0 +1,119 @@
+_schema-version: "3.2"
+
+ID: asint_standalone_ar_with_bwz
+
+version: 0.0.1
+
+modules:
+  - name: asint-standalone-ar-with-bwz-approuter
+    type: approuter.nodejs
+    path: asint-approuter
+    requires:
+      - name: asint_standalone_ar_with_bwz_html_repo_runtime
+      - name: uaa_asint_standalone_ar_with_bwz
+      - name: asint_star_portal_resources
+      - name: asint_standalone_ar_with_bwz-destination-service
+        group: destinations
+        properties:
+          forwardAuthToken: false
+          name: ui5
+          url: https://ui5.sap.com
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    build-parameters:
+      ignore:
+        - default-*.json
+        - .env
+        - "*node_modules*"
+        - package-lock.json
+
+  - name: asint_standalone_ar_with_bwz_ui_deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: asint_standalone_ar_with_bwz_html_repo_host
+        parameters:
+          content-target: true
+      - name: asint_star_portal_resources
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - comasintstarapp1.zip
+          name: comasintstarapp1
+          target-path: resources/
+
+  - name: comasintstarapp1
+    type: html5
+    path: app1
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+
+  - name: asint_star_flp
+    type: com.sap.application.content
+    path: asint-portal
+    requires:
+      - name: asint_star_portal_resources
+        parameters:
+          content-target: true
+          service-key:
+            name: content-deploy-key
+            config:
+              content-endpoint: developer
+      - name: asint_standalone_ar_with_bwz_html_repo_host
+      - name: asint_standalone_ar_with_bwz_ui_deployer
+      - name: uaa_asint_standalone_ar_with_bwz
+
+resources:
+  - name: asint_standalone_ar_with_bwz_html_repo_runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+
+  - name: uaa_asint_standalone_ar_with_bwz
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+
+  - name: asint_standalone_ar_with_bwz_html_repo_host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+  - name: asint_star_portal_resources
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: portal
+      service-plan: standard
+
+  - name: asint_standalone_ar_with_bwz-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: asint_standalone_ar_with_bwz-destination-service
+      service-plan: lite
+
+parameters:
+  deploy_mode: html5-repo

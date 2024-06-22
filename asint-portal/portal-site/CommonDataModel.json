@@ -1,0 +1,98 @@
+{
+	"_version": "3.0.0",
+	"identification": {
+		"id": "43a0ea8c-a5c1-488f-94fa-40f08e74be62",
+		"entityType": "bundle"
+	},
+	"payload": {
+		"catalogs": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "default-catalog",
+				"title": "First Group",
+				"entityType": "catalog",
+				"i18n": "i18n/i18n.properties"
+			},
+			"payload": {
+				"viz": []
+			}
+		}],
+		"groups": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "master-data",
+				"title": "First Group",
+				"entityType": "group",
+				"i18n": "i18n/i18n.properties"
+			},
+			"payload": {
+				"viz": [{
+					"id": "com.asint.star.app1-0-1718106205392",
+					"appId": "com.asint.star.app1",
+					"vizId": "app1-display"
+				}]
+			}
+		}],
+		"sites": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "5ed463d9-e069-4dd6-ab10-9135a84e6a80",
+				"entityType": "site",
+				"title": "SAP Fiori launchpad site on Cloud Foundry",
+				"description": "SAP Fiori launchpad site on Cloud Foundry, deployed from WING"
+			},
+			"payload": {
+				"config": {
+					"ushellConfig": {
+						"services": {
+							"AllMyApps": {
+								"config": {
+									"enabled": true
+								}
+							}
+						},
+						"renderers": {
+							"fiori2": {
+								"componentData": {
+									"config": {
+										"applications": {
+											"Shell-home": {}
+										},
+										"enableSearch": true,
+										"enablePersonalization": true,
+										"enableRecentActivity": true,
+										"enableSetTheme": true,
+										"enableSetLanguage": true,
+										"enableAutomaticSignout": true,
+										"sessionTimeoutIntervalInMinutes": 15,
+										"sessionTimeoutReminderInMinutes": 3,
+										"enableWebAssist": true,
+										"keyUserAdaptation": true,
+										"webAssistantParams": {
+											"product": "LAUNCHPADS_BTP_CF",
+											"version": "latest",
+											"stateUACP": "PRODUCTION",
+											"dataUrlUACP": "https://help.sap.com/webassistant/",
+											"resourceUrl": "https://webassistant.enable-now.cloud.sap/web_assistant/framework/"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"groupsOrder": ["master-data"],
+				"sap.cloud.portal": {
+					"config": {
+						"theme.id": "sap_horizon",
+						"theme.active": ["sap_horizon_dark", "sap_horizon", "sap_horizon_hcb",
+							"sap_horizon_hcw", "sap_fiori_3", "sap_fiori_3_dark", "sap_belize_hcb", "sap_belize_hcw"
+						],
+						"showSessionTimeoutDialog": true,
+						"ui5VersionNumber": "1.124.0"
+					}
+				}
+			}
+		}]
+	}
+}
